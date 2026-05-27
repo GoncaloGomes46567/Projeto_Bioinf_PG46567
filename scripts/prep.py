@@ -76,7 +76,7 @@ def main():
     meta.index.name = "#NAME"
     meta.to_csv(os.path.join(args.out_dir, "metadata.txt"), sep="\t")
 
-    print(f"\n✅ Concluído com sucesso! Ficheiros guardados na pasta '{args.out_dir}'")
+    print(f"Tratamento concluído com sucesso! Ficheiros guardados na pasta '{args.out_dir}'")
 
 if __name__ == "__main__":
     main()
