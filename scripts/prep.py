@@ -104,7 +104,7 @@ def main():
     df_meta.to_csv(os.path.join(args.pasta_saida, "metadata.txt"), sep="\t")
     print(f"   metadata.txt   ({df_meta.shape[0]} amostras, {df_meta['Group'].nunique()} grupos)")
 
-    print(f"\n[OK] Ficheiros guardados em: '{args.pasta_saida}/'")
+    print(f"\nFicheiros guardados em: '{args.pasta_saida}/'")
     print("     MicrobiomeAnalyst: Taxonomy labels=QIIME | Normalized data=NAO marcar")
 if __name__ == "__main__":
     main()
