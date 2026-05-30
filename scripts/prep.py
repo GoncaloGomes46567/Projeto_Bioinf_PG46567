@@ -59,24 +59,26 @@ def main():
     id_map = build_id_map(args.fasta)
     df.index = df.index.map(lambda x: id_map.get(x, x))
     
-    otu = df.astype(int)
-    otu.index.name = "#NAME"
-    otu.to_csv(os.path.join(args.out_dir, "otu_table.txt"), sep="\t")
+
+    otu_float = df.astype(float)
+    otu_tss = otu_float.div(otu_float.sum(axis=0), axis=1)
+    otu_tss.index.name = "#NAME"
+    otu_tss.to_csv(os.path.join(args.out_dir, "otu_table.txt"), sep="\t", float_format="%.6f")
 
     print("2. Processando Taxonomia...")
     tax_df = pd.read_csv(args.taxonomy, sep="\t", index_col=0)
     tax_col = tax_df.columns[0]  # Assume a primeira coluna como a string taxonómica
     parsed_tax = tax_df[tax_col].apply(parse_taxonomy).apply(pd.Series)
-    parsed_tax = parsed_tax.loc[parsed_tax.index.isin(otu.index)].reindex(otu.index)
+    parsed_tax = parsed_tax.loc[parsed_tax.index.isin(otu_tss.index)].reindex(otu_tss.index)
     parsed_tax.index.name = "#TAXONOMY"
     parsed_tax.to_csv(os.path.join(args.out_dir, "taxonomy.txt"), sep="\t")
 
     print("3. Processando Metadados...")
-    meta = pd.DataFrame({"Group": [get_group(s, groups_dict) for s in otu.columns]}, index=otu.columns)
+    meta = pd.DataFrame({"Group": [get_group(s, groups_dict) for s in otu_tss.columns]}, index=otu_tss.columns)
     meta.index.name = "#NAME"
     meta.to_csv(os.path.join(args.out_dir, "metadata.txt"), sep="\t")
 
-    print(f"\n✅ Concluído com sucesso! Ficheiros guardados na pasta '{args.out_dir}'")
+    print(f"\n Concluído com sucesso! Ficheiros guardados na pasta '{args.out_dir}'")
 
 if __name__ == "__main__":
     main()
