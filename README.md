@@ -8,15 +8,14 @@ Este script automatiza a conversão e formatação de dados exportados do \*\*QI
 
 
 
-É necessário ter a biblioteca "pandas" instalada
+É necessário ter a biblioteca "pandas" instalada para conseguir correr este package.
 
 
+Guia de utilização:
 
-Edita o ficheiro config/mapping.json para definir as regras do teu projeto (Mapeamento de Prefixo da Amostra -> Nome do Grupo).
+1 - Edita o ficheiro config/mapping.json para definir as regras do teu projeto (Mapeamento de Prefixo da Amostra -> Nome do Grupo).
 
-
-
-Executa o script:
+2- Executa o script:
 
 
 
