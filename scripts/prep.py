@@ -5,10 +5,6 @@ import json
 import pandas as pd
 
 def carregar_mapa_fasta(caminho_fasta):
-    """
-    Lê o ficheiro FASTA e cria um mapa entre o ID da sequência 
-    e o cabeçalho completo.
-    """
     mapa = {}
     with open(caminho_fasta, 'r') as f:
         id_atual = None
@@ -21,10 +17,6 @@ def carregar_mapa_fasta(caminho_fasta):
     return mapa
     
 def limpar_taxonomia(texto_tax):
-    """
-    Divide a string de taxonomia do QIIME2 (k__...; p__...)
-    nas colunas certas que o MicrobiomeAnalyst pede.
-    """
     niveis = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
     prefixos = ["k__", "p__", "c__", "o__", "f__", "g__", "s__"]
     
@@ -43,10 +35,6 @@ def limpar_taxonomia(texto_tax):
     return resultado
 
 def descobrir_grupo(nome_amostra, dicionario_grupos):
-    """
-    Descobre o grupo da amostra com base no prefixo mais longo 
-   correspondente no ficheiro JSON.
-    """
     prefixos_ordenados = sorted(dicionario_grupos.keys(), key=len, reverse=True)
     for prefixo in prefixos_ordenados:
         if nome_amostra.startswith(prefixo):
@@ -69,8 +57,6 @@ def main():
         dados_grupos = json.load(f)
 
     print("-> Formatando a tabela de abundâncias...")
-    
-<<<<<<< HEAD
 
     otu_float = df.astype(float)
     otu_tss = otu_float.div(otu_float.sum(axis=0), axis=1)
@@ -91,7 +77,6 @@ def main():
     meta.to_csv(os.path.join(args.out_dir, "metadata.txt"), sep="\t")
 
     print(f"\n Concluído com sucesso! Ficheiros guardados na pasta '{args.out_dir}'")
-=======
     df_otu = pd.read_csv(args.tabela_input, sep="\t", skiprows=1, index_col=0)
     mapa_ids = carregar_mapa_fasta(args.fasta)
     df_otu.index = [mapa_ids.get(idx, idx) for idx in df_otu.index]
@@ -108,7 +93,7 @@ def main():
     tax_limpa.index.name = "#TAXONOMY"
     caminho_tax = os.path.join(args.pasta_saida, "taxonomy.txt")
     tax_limpa.to_csv(caminho_tax, sep="\t")
-    print("-> Gerando ficheiro de metadados...")
+    print("Gerando ficheiro de metadados...")
     lista_grupos = []
     
     for amostra in df_otu.columns:
@@ -119,7 +104,6 @@ def main():
     caminho_meta = os.path.join(args.pasta_saida, "metadata.txt")
     df_meta.to_csv(caminho_meta, sep="\t")
     print(f"\n[OK] Tudo pronto! Os ficheiros foram guardados em: '{args.pasta_saida}'")
->>>>>>> 70c8f5725d8e4171dce7b1f32704bb63bef8ad08
 
 if __name__ == "__main__":
     main()
